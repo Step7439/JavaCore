@@ -1,8 +1,11 @@
 package StreamAPI;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main1 {
+
     public static void main(String[] args) {
         List<String> names = Arrays.asList("Jack", "Connor", "Harry", "George", "Samuel", "John");
         List<String> families = Arrays.asList("Evans", "Young", "Harris", "Wilson", "Davies", "Adamson", "Brown");
@@ -16,64 +19,17 @@ public class Main1 {
                     Education.values()[new Random().nextInt(Education.values().length)])
             );
         }
-    }
-}
+        long streamAge = persons.stream()
 
-enum Sex {
-    MAN,
-    WOMAN
-}
+                .filter(person -> person.getAge() < 18)
+                .count();
+        System.out.println(streamAge);
 
-enum Education {
-    ELEMENTARY,
-    SECONDARY,
-    FURTHER,
-    HIGHER
-}
+        persons.stream()
+                .filter(person -> person.getAge() < 18)
+                .map(Person::getFamily)
+                .toList()
+                .forEach(System.out::println);
 
-class Person {
-    private String name;
-    private String family;
-    private Integer age;
-    private Sex sex;
-    private Education education;
-
-    public Person(String name, String family, int age, Sex sex, Education education) {
-        this.name = name;
-        this.family = family;
-        this.age = age;
-        this.sex = sex;
-        this.education = education;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getFamily() {
-        return family;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public Sex getSex() {
-        return sex;
-    }
-
-    public Education getEducation() {
-        return education;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", family='" + family + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", education=" + education +
-                '}';
-    }
+    }                   
 }
