@@ -2,7 +2,6 @@ package StreamAPI;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main1 {
 
@@ -19,17 +18,27 @@ public class Main1 {
                     Education.values()[new Random().nextInt(Education.values().length)])
             );
         }
+        System.out.print("Численость несовершеннолетних ");
         long streamAge = persons.stream()
-
                 .filter(person -> person.getAge() < 18)
                 .count();
         System.out.println(streamAge);
 
+        System.out.println("Список призывников");
         persons.stream()
-                .filter(person -> person.getAge() < 18)
+                .filter(person -> person.getAge() > 18)
                 .map(Person::getFamily)
                 .toList()
                 .forEach(System.out::println);
+
+        List<Person> sortFemily = persons.stream()
+                .filter(person -> person.getAge() < 65 || person.getSex().equals(Sex.MAN))
+                .filter(person -> person.getAge() < 60 || person.getSex().equals(Sex.WOMAN))
+                .filter(person -> person.getAge() > 18)
+                .filter(person -> person.getEducation().equals(Education.HIGHER))
+                .sorted(Comparator.comparing(Person::getFamily))
+                .collect(Collectors.toList());
+        sortFemily.forEach(System.out::println);
 
     }                   
 }
